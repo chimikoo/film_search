@@ -40,4 +40,25 @@ function searchMovies() {
     });
 }
 
+function displayMovies(movies) {
+    movieList.innerHTML = "";
+  
+    if (searchInput.value.trim() === "") {
+      return;
+    }
+  
+    if (movies.length === 0) {
+      const noResultsItem = document.createElement("li");
+      noResultsItem.textContent = "No results found.";
+      movieList.appendChild(noResultsItem);
+      return;
+    }
+  
+    movies.forEach((movie) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = movie.title;
+      movieList.appendChild(listItem);
+    });
+  }
+
 searchInput.addEventListener("input", searchMovies);
