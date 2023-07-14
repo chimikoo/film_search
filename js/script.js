@@ -3,6 +3,14 @@ const movieList = document.getElementById("movieList");
 
 function displayMovies(movies) {
   movieList.innerHTML = "";
+
+  if (movies.length === 0) {
+    const noResultsItem = document.createElement("li");
+    noResultsItem.textContent = "No results found.";
+    movieList.appendChild(noResultsItem);
+    return;
+  }
+
   movies.forEach((movie) => {
     const listItem = document.createElement("li");
     listItem.textContent = movie.title;
@@ -29,7 +37,7 @@ function searchMovies() {
       });
 
       displayMovies(filteredMovies);
-    })
+    });
 }
 
 searchInput.addEventListener("input", searchMovies);
