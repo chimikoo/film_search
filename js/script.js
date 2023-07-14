@@ -1,13 +1,35 @@
-const films = [
-  { title: "Inception", genre: "Sci-Fi", year: 2010 },
-  { title: "The Shawshank Redemption", genre: "Drama", year: 1994 },
-  { title: "The Dark Knight", genre: "Action", year: 2008 },
-  { title: "Pulp Fiction", genre: "Crime", year: 1994 },
-  { title: "Fight Club", genre: "Drama", year: 1999 },
-];
+const searchInput = document.getElementById("searchInput");
+const movieList = document.getElementById("movieList");
 
-const recentFilms = films.filter((films) => films.year >= 2000);
-const actionGenre = films.filter((films) => films.genre === "Action");
+function displayMovies(movies) {
+  movieList.innerHTML = "";
+  movies.forEach((movie) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = movie.title;
+    movieList.appendChild(listItem);
+  });
+}
 
-console.log(recentFilms);
-console.log(actionGenre);
+function searchMovies() {
+  const searchTerm = searchInput.value.toLowerCase();
+
+  fetch("./movies.json")
+    .then((response) => response.json())
+    .then((films) => {
+      const filteredMovies = films.filter((movie) => {
+        const lowerCaseTitle = movie.title.toLowerCase();
+        const lowerCaseGenre = movie.genre.toLowerCase();
+        const yearString = movie.year.toString();
+
+        return (
+          lowerCaseTitle.includes(searchTerm) ||
+          lowerCaseGenre.includes(searchTerm) ||
+          yearString.includes(searchTerm)
+        );
+      });
+
+      displayMovies(filteredMovies);
+    })
+}
+
+searchInput.addEventListener("input", searchMovies);
